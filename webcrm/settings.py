@@ -26,21 +26,12 @@ ALLOWED_HOSTS = ['*']
 # Database
 DATABASES = {
     'default': {
-        # for SQLite3
-        'ENGINE': 'django.db.backends.sqlite3',
-
-        # for MySQl
-        #'ENGINE': 'django.db.backends.mysql',
-        #'PORT': '3306',
-
-        # for PostgreSQL
-        # "ENGINE": "django.db.backends.postgresql",
-        # 'PORT': '5432',
-
-        'NAME': 'crm_db',
-        'USER': 'crm_user',
-        'PASSWORD': 'crmpass',
-        'HOST': 'localhost',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'railway',
+        'USER': 'root',
+        'PASSWORD': 'uAWtpgQEHbDcTFiJOmxratreEnpIJXjb',
+        'HOST': 'kodama.proxy.rlwy.net',
+        'PORT': '38086',
     }
 }
 
