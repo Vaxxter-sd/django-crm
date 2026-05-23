@@ -40,10 +40,11 @@ def activate_stored_messages_to_user(request: WSGIRequest, profile: UserProfile)
 
 
 def check_user_language(profile: UserProfile) -> None:
-    cur_language = get_language()
-    if cur_language != profile.language_code:
-        profile.language_code = cur_language
-        profile.save(update_fields=['language_code'])
+    if profile is not None and hasattr(profile, 'language_code'):
+        cur_language = get_language()
+        if cur_language != profile.language_code:
+            profile.language_code = cur_language
+            profile.save(update_fields=['language_code'])
 
 
 def set_user_department(request: WSGIRequest, groups) -> None:
@@ -91,11 +92,10 @@ def set_user_groups(request: WSGIRequest, groups) -> None:
 
 
 def set_user_timezone(profile: UserProfile) -> None:
-    utc_timezone = getattr(profile, 'utc_timezone', None)
-    if settings.USE_TZ and utc_timezone:
-        if profile.activate_timezone:
-            timezone.activate(
-                zoneinfo.ZoneInfo(profile.utc_timezone)
-            )
-        else:
-            timezone.deactivate()
+    if profile is not None and hasattr(profile, 'utc_timezone'):
+        utc_timezone = profile.utc_timezone
+        if settings.USE_TZ and utc_timezone:
+            if profile.activate_timezone:
+                timezone.activate(zoneinfo.ZoneInfo(utc_timezone))
+            else:
+                timezone.deactivate()
