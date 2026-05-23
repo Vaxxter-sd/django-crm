@@ -304,3 +304,8 @@ if TESTING:
     SECURE_SSL_REDIRECT = False
     LANGUAGE_CODE = 'en'
     LANGUAGES = [('en', ''), ('uk', '')]
+    
+CSRF_TRUSTED_ORIGINS = [
+    'https://django-crm-production-78aa.up.railway.app',
+    'http://django-crm-production-78aa.up.railway.app',
+]
