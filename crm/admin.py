@@ -483,3 +483,14 @@ crm_site.register(Product, productadmin.ProductAdmin)
 crm_site.register(Request, requestadmin.RequestAdmin)
 crm_site.register(Shipment, ShipmentAdmin)
 crm_site.register(Tag, tagadmin.TagAdmin)
+from crm.models import LeadFromFlask
+
+@admin.register(LeadFromFlask)
+class LeadFromFlaskAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'correo', 'tipo_escuela', 'fecha_registro')
+    list_filter = ('tipo_escuela',)
+    search_fields = ('nombre', 'correo')
+    readonly_fields = ('fecha_registro',)
+
+# Si quieres que aparezca también en el menú principal del CRM:
+crm_site.register(LeadFromFlask, LeadFromFlaskAdmin)
