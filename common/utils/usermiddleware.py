@@ -15,17 +15,18 @@ class UserMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if request.user.is_authenticated:
-            profile = getattr(request.user, 'profile', None)
-            groups = request.user.groups.all()      
-            set_user_timezone(profile)
-            set_user_groups(request, groups)
-            set_user_department(request, groups)
-            iem = apps.get_app_config('crm')
-            iem.import_emails(request.user)
-            activate_stored_messages_to_user(request, profile)
-            check_user_language(profile)
-        return self.get_response(request)
+    # Verifica que request.user no sea None antes de acceder a sus atributos
+    if request.user and request.user.is_authenticated:
+        profile = getattr(request.user, 'profile', None)
+        groups = request.user.groups.all()      
+        set_user_timezone(profile)
+        set_user_groups(request, groups)
+        set_user_department(request, groups)
+        iem = apps.get_app_config('crm')
+        iem.import_emails(request.user)
+        activate_stored_messages_to_user(request, profile)
+        check_user_language(profile)
+    return self.get_response(request)
 
 
 def activate_stored_messages_to_user(request: WSGIRequest, profile: UserProfile) -> None:
