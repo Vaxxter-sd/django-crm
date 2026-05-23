@@ -30,7 +30,7 @@ class UserMiddleware:
 
 
 def activate_stored_messages_to_user(request: WSGIRequest, profile: UserProfile) -> None:
-    if profile.messages:
+    if profile and profile.messages:   # ← agregamos la verificación de que profile existe
         while profile.messages:
             msg = mark_safe(profile.messages.pop(0))    # NOQA
             level = profile.messages.pop(0)             # NOQA
