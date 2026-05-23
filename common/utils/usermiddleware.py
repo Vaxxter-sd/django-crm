@@ -15,17 +15,19 @@ class UserMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-    if request.user and request.user.is_authenticated:
-        profile = getattr(request.user, 'profile', None)
-        groups = request.user.groups.all()      
-        set_user_timezone(profile)
-        set_user_groups(request, groups)
-        set_user_department(request, groups)
-        iem = apps.get_app_config('crm')
-        iem.import_emails(request.user)
-        activate_stored_messages_to_user(request, profile)
-        check_user_language(profile)
-    return self.get_response(request)
+        # La siguiente línea debe tener 4 espacios de indentación
+        if request.user and request.user.is_authenticated:
+            # Las líneas dentro del if deben tener 8 espacios (o un tab)
+            profile = getattr(request.user, 'profile', None)
+            groups = request.user.groups.all()
+            set_user_timezone(profile)
+            set_user_groups(request, groups)
+            set_user_department(request, groups)
+            iem = apps.get_app_config('crm')
+            iem.import_emails(request.user)
+            activate_stored_messages_to_user(request, profile)
+            check_user_language(profile)
+        return self.get_response(request)
 
 
 def activate_stored_messages_to_user(request: WSGIRequest, profile: UserProfile) -> None:
@@ -49,8 +51,8 @@ def set_user_department(request: WSGIRequest, groups) -> None:
         if any((
             request.user.is_superuser,
             request.user.is_chief,
-            request.user.is_superoperator,  # NOQA
-            request.user.is_accountant      # NOQA
+            request.user.is_superoperator,
+            request.user.is_accountant
         )):
             if request.GET.get('department'):
                 department_id = request.GET.get('department')
@@ -86,10 +88,10 @@ def set_user_groups(request: WSGIRequest, groups) -> None:
         if departments > 1:
             request.user.is_superoperator = True
             request.user.is_operator = False
-    
+
 
 def set_user_timezone(profile: UserProfile) -> None:
-    utc_timezone = getattr(profile, 'utc_timezone', None)  
+    utc_timezone = getattr(profile, 'utc_timezone', None)
     if settings.USE_TZ and utc_timezone:
         if profile.activate_timezone:
             timezone.activate(
