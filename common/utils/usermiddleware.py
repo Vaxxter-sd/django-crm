@@ -15,7 +15,6 @@ class UserMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-    # Verifica que request.user no sea None antes de acceder a sus atributos
     if request.user and request.user.is_authenticated:
         profile = getattr(request.user, 'profile', None)
         groups = request.user.groups.all()      
@@ -30,10 +29,10 @@ class UserMiddleware:
 
 
 def activate_stored_messages_to_user(request: WSGIRequest, profile: UserProfile) -> None:
-    if profile and profile.messages:   # ← agregamos la verificación de que profile existe
+    if profile and profile.messages:
         while profile.messages:
-            msg = mark_safe(profile.messages.pop(0))    # NOQA
-            level = profile.messages.pop(0)             # NOQA
+            msg = mark_safe(profile.messages.pop(0))
+            level = profile.messages.pop(0)
             messages.add_message(request, getattr(messages, level), msg)
         profile.save(update_fields=['messages'])
 
